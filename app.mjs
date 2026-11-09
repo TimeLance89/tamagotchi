@@ -221,6 +221,11 @@ document.addEventListener("keydown", event => {
 });
 byId("export-button").addEventListener("click", () => {
   if (!pet) return;
+  // Auf Android direkt in den Download-Ordner sichern; im Browser wie bisher als Blob.
+  if (window.MioAndroid && typeof window.MioAndroid.saveBackup === "function") {
+    window.MioAndroid.saveBackup(JSON.stringify(pet, null, 2));
+    return;
+  }
   const data = new Blob([JSON.stringify(pet, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(data);
   const link = document.createElement("a");

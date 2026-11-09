@@ -1,0 +1,66 @@
+name: mio. Android APK
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'android/**'
+      - '.github/workflows/android-apk.yml'
+      - '*.html'
+      - '*.css'
+      - '*.mjs'
+      - 'icon.svg'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    name: Android APK bauen und veröffentlichen
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Projekt auschecken
+        uses: actions/checkout@v4
+      - name: Java 17 vorbereiten
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Node.js 22 vorbereiten
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Simulationstests
+        run: npm test
+      - name: Android SDK vorbereiten
+        uses: android-actions/setup-android@v3
+      - name: Android Plattform installieren
+        run: sdkmanager 'platforms;android-35' 'build-tools;35.0.0'
+      - name: Gradle vorbereiten
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Original-Spiel ins APK einbetten
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp index.html styles.css evolution.css app.mjs engine.mjs evolution.mjs evolution-ui.mjs icon.svg android/app/src/main/assets/
+      - name: Android APK erstellen
+        run: gradle -p android :app:assembleDebug --no-daemon
+      - name: APK bereitstellen
+        run: |
+          cp android/app/build/outputs/apk/debug/app-debug.apk mio-android-preview.apk
+          sha256sum mio-android-preview.apk
+      - name: APK als Build-Artefakt speichern
+        uses: actions/upload-artifact@v4
+        with:
+          name: mio-android-apk
+          path: mio-android-preview.apk
+          if-no-files-found: error
+      - name: Öffentliche Testversion bereitstellen
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release view android-preview >/dev/null 2>&1 || gh release create android-preview --target "${{ github.sha }}" --title "mio. Android Preview" --notes "Installierbare Android-Testversion von mio. – offline, mit Evolution und lokalem Spielstand. APK aus den GitHub-Actions-Builds. Mindestversion: Android 10. Debug-Signatur; vor Updates bitte Spielstand exportieren." --prerelease
+          gh release upload android-preview mio-android-preview.apk --clobber
