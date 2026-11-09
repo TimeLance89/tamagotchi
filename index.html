@@ -144,6 +144,11 @@
       <span class="section-kicker">DEIN KLEINES UNIVERSUM</span>
       <h2 id="settings-title">Einstellungen</h2>
       <p>Dein Wesen lebt ausschließlich in diesem Browser. Die Simulation ist regelbasiert und braucht weder einen Server noch ein KI-Abo.</p>
+      <div class="settings-actions">
+        <button type="button" id="export-button" class="settings-action">↓ Geschichte sichern <span>JSON-Datei</span></button>
+        <button type="button" id="import-button" class="settings-action">↑ Geschichte wiederherstellen <span>Aus Sicherung</span></button>
+        <input type="file" id="import-file" accept=".json,application/json" hidden>
+      </div>
       <button type="button" id="reset-button" class="danger-button">Ein neues Wesen erschaffen</button>
       <p class="warning-text">Das ersetzt die bisherigen Erinnerungen auf diesem Gerät unwiderruflich.</p>
     </section>
