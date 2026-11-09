@@ -208,6 +208,40 @@ settings.addEventListener("click", event => { if (event.target === settings) clo
 document.addEventListener("keydown", event => {
   if (event.key === "Escape" && !settings.hidden) closeDialog(settings);
 });
+byId("export-button").addEventListener("click", () => {
+  if (!pet) return;
+  const data = new Blob([JSON.stringify(pet, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(data);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "mio-" + pet.name.replace(/[^a-zA-Z0-9_-]/g, "_") + "-sicherung.json";
+  document.body.append(link);
+  link.click();
+  link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  showToast("Geschichte als Datei gesichert ✦");
+});
+byId("import-button").addEventListener("click", () => byId("import-file").click());
+byId("import-file").addEventListener("change", async event => {
+  const file = event.target.files?.[0];
+  if (!file) return;
+  try {
+    if (file.size > 250_000) throw new Error("Die Datei ist zu groß.");
+    const incoming = JSON.parse(await file.text());
+    if (!isValid(incoming)) throw new Error("Das ist keine gültige mio.-Sicherung.");
+    if (pet && !confirm("Dein aktuelles Wesen wird durch " + incoming.name + " ersetzt. Fortfahren?")) return;
+    pet = incoming;
+    advance(pet);
+    previousMemoryKey = "";
+    save();
+    closeDialog(settings);
+    render();
+    showToast("Willkommen zurück, " + pet.name + " ♡");
+  } catch (error) {
+    showToast(error.message || "Sicherung konnte nicht geladen werden.");
+  } finally { event.target.value = ""; }
+});
+
 byId("reset-button").addEventListener("click", () => {
   if (!pet || !confirm("Wirklich ein neues Wesen erschaffen? Alle Erinnerungen von " + pet.name + " in diesem Browser gehen verloren.")) return;
   try { localStorage.removeItem(KEY); } catch { /* Browser blockiert Speicherung */ }
