@@ -1,3 +1,4 @@
+import { initEvolutionUI, renderEvolutionUI } from "./evolution-ui.mjs";
 import { ACTIONS, ACTIVITIES, TRAITS, advance, ageFor, birth, goalFor, interact, stageFor, strongestHabit, titleFor } from "./engine.mjs";
 
 const KEY = "mio.life.v1";
@@ -171,6 +172,7 @@ function render() {
   renderScene();
   renderTraits();
   renderMemories();
+  renderEvolutionUI(pet);
 }
 
 function pulse() {
@@ -272,6 +274,7 @@ window.addEventListener("storage", event => {
 });
 document.addEventListener("visibilitychange", () => { if (!document.hidden) pulse(); });
 window.addEventListener("focus", pulse);
+initEvolutionUI(() => pet, (message) => {save(); render(); if (message) showToast(message);});
 if (pet) {
   advance(pet);
   save();

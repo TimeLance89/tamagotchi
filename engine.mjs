@@ -1,3 +1,4 @@
+import { createIdentity, ensureIdentity, decisionBias, onDecision, onInteraction, progressFor } from "./evolution.mjs";
 // Die Simulation ist absichtlich lokal und nachvollziehbar: keine Cloud-KI, kein Zwang, keine Bestrafung.
 export const ACTIONS = {
   talk: { label: "Reden", icon: "💬" },
@@ -42,7 +43,7 @@ export function birth(name = "", now = Date.now(), random = Math.random) {
   const traits = Object.fromEntries(TRAITS.map(({ key }) => [key, rand(random, 20, 85)]));
   const goal = pick(random, GOALS);
   const chosenName = String(name).trim().slice(0, 22) || pick(random, NAMES);
-  return {
+  const state = {
     version: 1, name: chosenName, bornAt: now, updatedAt: now, decisionAt: now,
     traits, goal: goal.key, goalProgress: 0, goalsReached: 0,
     meters: { energy: 82, wonder: 68, connection: 48, spark: 55 },
@@ -51,6 +52,8 @@ export function birth(name = "", now = Date.now(), random = Math.random) {
     current: { activity: "watch", place: "meadow", thought: "Oh. Du bist also da. Schön.", since: now },
     lastInteraction: null
   };
+  createIdentity(state, random);
+  return state;
 }
 
 function remember(state, at, icon, title, text) {
@@ -86,15 +89,19 @@ function scoreActivity(s, key, hour, random) {
   if (s.current.activity === key) points -= 32;
   if ((s.habits[key] || 0) > 7) points -= 4; // eine Vorliebe darf wachsen, aber nicht alles dominieren
   if (m.energy < 26 && !["sleep", "dream", "watch"].includes(key)) points -= 50;
-  return points;
+  const bias = decisionBias(s, key);
+  return {score: points + bias.score, reason: bias.why};
 }
 
 function decide(s, at, random) {
   const hour = new Date(at).getHours();
   const keys = Object.keys(ACTIVITIES);
-  const activity = keys.map(key => ({ key, score: scoreActivity(s, key, hour, random) }))
-    .sort((a, b) => b.score - a.score)[0].key;
+  const scores = keys.map(key => ({ key, ...scoreActivity(s, key, hour, random) }))
+    .sort((a,b) => b.score - a.score);
+  const activity = scores[0].key;
   const chosen = ACTIVITIES[activity];
+  const explanation = `${s.name} ${chosen.label}, ${scores[0].reason}.`;
+
   s.habits[activity] = (s.habits[activity] || 0) + 1;
   s.skills[chosen.skill] = Math.min(999, (s.skills[chosen.skill] || 0) + 1);
   s.current = { activity, place: chosen.place, thought: pick(random, chosen.line), since: at };
@@ -126,10 +133,12 @@ function decide(s, at, random) {
   } else if (random() < 0.32) {
     remember(s, at, chosen.icon, "Ein eigener Moment", s.name + " " + chosen.label + ". „" + s.current.thought + "“");
   }
+  onDecision(s, activity, at, explanation, random);
 }
 
 export function advance(state, now = Date.now(), random = Math.random) {
   if (!state || state.version !== 1) return state;
+  ensureIdentity(state);
   if (!Number.isFinite(now) || now <= state.updatedAt) return state;
   const elapsed = Math.max(0, now - state.updatedAt);
   applyPassage(state, elapsed / 60000);
@@ -180,6 +189,7 @@ export function interact(state, key, now = Date.now(), random = Math.random) {
   if (random() < 0.25) changeTrait(state, delta.trait, 1);
   if (key !== "pet") remember(state, now, ACTIONS[key].icon, "Zusammen erlebt", ACTIONS[key].label + " mit dir: „" + state.current.thought + "“");
   state.updatedAt = now;
+  onInteraction(state, key, now);
   return true;
 }
 
@@ -196,8 +206,8 @@ export function ageFor(state, now = Date.now()) {
 }
 
 export function stageFor(state) {
-  const n = Object.values(state.habits).reduce((a, b) => a + b, 0);
-  return n < 12 ? "Ein neuer Funke" : n < 45 ? "Ein neugieriger Geist" : n < 110 ? "Ein eigenes Ich" : "Eine kleine Legende";
+  const stage = progressFor(state).stage;
+  return stage.title + " · " + stage.subtitle;
 }
 
 export function strongestHabit(state) {
