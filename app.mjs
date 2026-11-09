@@ -17,11 +17,20 @@ let previousMemoryKey = "";
 let lastActionAt = 0;
 
 function isValid(value) {
-  return Boolean(value && value.version === 1 && typeof value.name === "string" &&
-    value.traits && value.meters && value.habits && value.skills &&
-    value.current && Array.isArray(value.memories) &&
-    Number.isFinite(value.bornAt) && Number.isFinite(value.updatedAt) &&
-    Number.isFinite(value.decisionAt));
+  const numeric = n => typeof n === "number" && Number.isFinite(n);
+  return Boolean(value && value.version === 1 &&
+    typeof value.name === "string" && value.name.length > 0 && value.name.length <= 22 &&
+    value.traits && TRAITS.every(t => numeric(value.traits[t.key]) && value.traits[t.key] >= 0 && value.traits[t.key] <= 100) &&
+    value.meters && meterNames.every(k => numeric(value.meters[k]) && value.meters[k] >= 0 && value.meters[k] <= 100) &&
+    value.habits && typeof value.habits === "object" && !Array.isArray(value.habits) &&
+    value.skills && typeof value.skills === "object" &&
+    value.current && ACTIVITIES[value.current.activity] &&
+    typeof value.current.thought === "string" && value.current.thought.length < 500 &&
+    Array.isArray(value.memories) && value.memories.length <= 50 &&
+    value.memories.every(m => m && numeric(m.at) && typeof m.icon === "string" &&
+      typeof m.title === "string" && typeof m.text === "string" && m.text.length < 3000) &&
+    numeric(value.bornAt) && numeric(value.updatedAt) && numeric(value.decisionAt) &&
+    numeric(value.bond) && numeric(value.goalProgress) && numeric(value.goalsReached));
 }
 
 function readSave() {
