@@ -1,42 +1,38 @@
-# mio. ✳ — Ein kleines Eigenleben
+# mio. WILD — ein kleines Universum, das sich selbst verändert
 
-Ein modernes, autonomes Tamagotchi, das nicht nur Aufgaben abarbeitet: **Es entwickelt einen eigenen Charakter und einen erkennbaren Evolutionsweg**. Du bist Begleitung, nicht Aufpasser.
+Eine vollständig offlinefähige Android- und Web-Spielwelt. Das Wesen wächst in fünf Evolutionsstufen, entscheidet nach Charakter und Erfahrungen selbstständig, entdeckt Artefakte in vier Regionen und begegnet eigenen Geschichten.
 
-## Version 0.2: Eine Welt, die sich verändert
+## Die neue Version
 
-- **Einzigartige genetische Signatur:** Aus dem Genom ergeben sich Körperfarbe, Ohren, Augen, Muster, Größe und Aura. Unterschiedliche Wesen sehen anders aus.
-- **Fünf echte Evolutionsstufen:** Ursprung → Erwachen → Wandlung → Entfaltung → Legende. Der Körper verändert sich sichtbar.
-- **Vier mögliche Bestimmungen:** Sternensucher, Funkenweber, Traumwandler und Herzenshüter. Der Entwicklungsweg hängt von Charakter und selbst gewählten Aktivitäten ab, nicht von einem vorher festgelegten Klickmenü.
-- **Autonomes Verhalten:** Neugier, Bedürfnisse, Gewohnheiten, Tageszeit, Motivation und neue Erfahrungen fließen in die Entscheidungen ein. Die Oberfläche erklärt den aktuellen Beweggrund.
-- **Eigene Entdeckungen:** Das Wesen kann auf seinen Streifzügen neue Artefakte finden und ein Sammelalbum anlegen. Gelegentliche Ereignisse bieten freiwillige Entscheidungen, die seine Eigenschaften tatsächlich verändern.
-- **Persönlichkeit über Zeit:** Vorlieben und Wesenszüge bilden sich durch seine eigenen Erlebnisse. Erinnerungen werden protokolliert; neue Entwicklungswege sind möglich.
-- **Ohne Pflegezwang:** Keine Bestrafung oder Tod durch Abwesenheit; beim nächsten Besuch wird die verstrichene Zeit in begrenzten Schritten simuliert.
-- **Bisherige Wesen bleiben erhalten:** Saves der Version 0.1 werden beim nächsten Start automatisch um eine stabile genetische Identität erweitert.
-- **Privat:** Keine Anmeldung, Server, APIs oder Telemetrie. Sicherung und Wiederherstellung als JSON-Datei möglich.
+- Eine **immersive, animierte Canvas-Welt** statt einer Liste von Bedürfnissen und Statusbalken
+- **Einzigartige Gene**, sichtbare Entwicklung, Flügel, Geweih, leuchtende Muster und fünf Lebenspfade
+- **Autonome Entscheidungen** aus Eigenschaften, Zielen, Werten, Energie, Biomen und Zufall
+- **Vier Regionen und zwölf Fundstücke**, die Beziehungen und die innere Entwicklung beeinflussen
+- **Acht Begegnungen mit echten Verzweigungen**, die dauerhaft im Gedächtnis bleiben
+- **Geschichte, Biome, DNA und Erinnerungen** über die Navigation erkundbar
+- **Datensparsam:** Kein Konto, keine Cloud, keine Telemetrie, kein Online-Zwang
+- **Alte Spielstände werden beim ersten Start lokal in das neue Format übernommen.** Das Original bleibt unter `mio.life.v1` erhalten.
 
-> **Technische Ehrlichkeit:** Die Intelligenz ist derzeit eine erklärbare, regelbasierte Verhaltenssimulation mit Gedächtnis und adaptiven Präferenzen. **Es ist noch kein generatives Sprachmodell integriert.** Dialogsätze verwenden aktuell Textvorlagen; ein optionales lokales KI-Modell ist eine spätere Ausbaustufe.
+**Wichtig:** Die Intelligenz beruht derzeit auf einer lokalen, erklärbaren Simulation. Eine generative KI mit freien, unvorhersehbaren Gesprächen ist noch nicht integriert. Das Wesen wird nicht bestraft, wenn du länger nicht spielst; beim nächsten Besuch holt die Simulation die Entwicklung begrenzt nach.
 
-## Starten
+## Sofort ausprobieren
 
-**Über GitHub Pages:** Repository → Settings → Pages → Deploy from a branch → main → /(root). Nach der Veröffentlichung bekommst du eine URL; kein Build nötig.
+Im Browser auf einem Webserver öffnen (`npm start`, dann `http://localhost:4173`) oder per GitHub Pages bereitstellen. Die native Android-App ist als APK unter [GitHub Releases](https://github.com/TimeLance89/tamagotchi/releases/tag/android-preview) verfügbar; der Android-Build wird über `.github/workflows/android-apk.yml` erzeugt.
 
-**Lokal:** Node.js 20+ installieren, Repository klonen, im Projektordner `npm start` und `http://localhost:4173` öffnen. Die App benötigt einen Webserver für ES Modules; HTML nicht einfach per Doppelklick öffnen.
+Das WILD-Interface besteht aus `index.html`, `wild.css`, `wild-app.mjs` und `wild-engine.mjs`. Die vorherigen `engine.mjs`, `evolution.mjs` und deren Tests bleiben als Kompatibilitäts- und Verlaufscode erhalten.
 
-**Testen:** `npm test` führt die Simulationstests unter Node.js aus; zusätzlich liegt ein GitHub-Actions-Workflow im Repository.
+### Testen
 
-## Aufbau
+```sh
+npm test
+```
 
-| Datei | Aufgabe |
-|---|---|
-| `engine.mjs` | Autonomes Verhalten und grundlegende Bedürfnisse |
-| `evolution.mjs` | Genom, Lebensformen, Ziele, Funde, Wegentscheidungen und Migration |
-| `evolution-ui.mjs` | Evolutionsdarstellung, Entscheidungen und Weltobjekte |
-| `app.mjs` | Browser-App, Speichern und Bedienung |
-| `index.html` | Spieloberfläche |
-| `styles.css`, `evolution.css` | Responsive Darstellung, Welt, Wesen und Animationen |
-| `server.mjs` | Lokaler Server ohne Dependencies |
-| `tests/` | Simulationstests |
+Der Testlauf prüft Geburten, autonome Aktivitäten, Entwicklungsformen, echte Folgen von Story-Entscheidungen, lokale Migration und sicheres Offline-Aufholen.
 
-## Geplante Ausbaustufen
+### APK-Aktualisierungen
 
-Ausführlichere, generierte Geschichten, weitere Lebensformen, sichtbare Orte, Begegnungen mehrerer Wesen, sichere NAS-Synchronisation und optional lokale KI-Gespräche über ein geschütztes Backend. Kein direkt freigegebener Ollama-Port im Internet.
+Die Vorschau-APK wird als Debug-Build signiert. **Vor einem Versionswechsel immer in ⚙ Einstellungen die Geschichte exportieren.** Unterschiedliche Debug-Schlüssel können ein Deinstallieren der alten Version erforderlich machen. Im Anschluss kann der Spielstand importiert werden.
+
+---
+
+**Ein Wesen, kein Aufgabenplan.**

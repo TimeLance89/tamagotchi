@@ -60,7 +60,7 @@ jobs:
       - name: Original-Spiel ins APK einbetten
         run: |
           mkdir -p android/app/src/main/assets
-          cp index.html styles.css evolution.css app.mjs engine.mjs evolution.mjs evolution-ui.mjs icon.svg android/app/src/main/assets/
+          cp index.html styles.css evolution.css app.mjs engine.mjs evolution.mjs evolution-ui.mjs wild.css wild-app.mjs wild-engine.mjs icon.svg android/app/src/main/assets/
       - name: Android APK erstellen
         run: gradle -p android :app:assembleDebug --no-daemon
       - name: APK bereitstellen
