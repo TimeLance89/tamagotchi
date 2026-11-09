@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d1425">
+  <meta name="description" content="Ein kleines Wesen mit eigenem Kopf. Erlebe ein Tamagotchi, das selbst entscheidet, lernt und wächst.">
+  <title>mio. — ein kleines Eigenleben</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.mjs" type="module"></script>
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="brand" href="./" aria-label="mio, Startseite"><span class="brand-mark">m<span>✳</span></span><span>mio<span class="brand-dot">.</span></span></a>
+      <div class="header-right">
+        <span class="live-pill"><span class="live-dot"></span> DEIN KLEINES UNIVERSUM</span>
+        <span id="clock" class="clock" aria-label="Uhrzeit">--:--</span>
+        <button type="button" class="icon-button" id="settings-button" aria-label="Einstellungen öffnen" title="Einstellungen">⚙</button>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="intro">
+        <div>
+          <div class="eyebrow"><span class="mini-spark">✧</span> EIN LEBEN, DAS SICH ENTFALTET</div>
+          <h1>Es ist <em>sein</em> Abenteuer.<br>Du bist ein Teil davon.</h1>
+          <p>Kein ständiges Füttern. Keine To-do-Liste. Nur ein kleines Wesen, das seinen eigenen Weg findet.</p>
+        </div>
+        <div class="intro-mark" aria-hidden="true">✳</div>
+      </div>
+
+      <div class="dashboard">
+        <section class="scene-card" aria-label="Welt des Wesens">
+          <div id="world" class="world world-meadow">
+            <div class="sky-orb"></div>
+            <div class="world-star star-a">✦</div><div class="world-star star-b">✧</div><div class="world-star star-c">✳</div>
+            <div class="world-hill hill-back"></div><div class="world-hill hill-front"></div>
+            <div class="land-flower flower-a">✿</div><div class="land-flower flower-b">✳</div>
+            <div class="world-topline">
+              <span class="world-chip"><span class="pulse-mark"></span><span id="world-location">IM GRÜNEN</span></span>
+              <span class="world-weather" id="world-weather">✦ Ein guter Moment</span>
+            </div>
+            <div class="thought" id="thought"><span class="thought-stars">✧</span><span id="thought-text">Vielleicht wartet heute etwas Wunderbares.</span><span class="thought-tail"></span></div>
+            <button type="button" id="creature" class="creature" aria-label="Wesen streicheln" title="Streicheln">
+              <span class="creature-aura"></span>
+              <span class="creature-shadow"></span>
+              <span class="creature-body">
+                <span class="antenna antenna-left"></span><span class="antenna antenna-right"></span>
+                <span class="cheek cheek-left"></span><span class="cheek cheek-right"></span>
+                <span class="eyes"><span class="eye"></span><span class="eye"></span></span>
+                <span class="mouth"></span>
+                <span class="glimmer"></span>
+              </span>
+            </button>
+            <div class="world-ground"><span>·</span><span>✧</span><span>·</span><span>✳</span><span>·</span></div>
+            <div class="scene-footer">
+              <div class="scene-footer-main"><span class="scene-label">GERADE IM KOPF</span><strong id="activity-label">Die Welt beobachten</strong></div>
+              <span id="activity-icon" class="activity-symbol" aria-hidden="true">✦</span>
+            </div>
+          </div>
+          <div class="scene-controls">
+            <div class="controls-heading"><div><span class="section-kicker">DEINE VERBINDUNG</span><h2>Ein Moment zusammen?</h2></div><span class="optional">Nur wenn du magst ♡</span></div>
+            <div class="action-grid">
+              <button type="button" data-action="talk" class="action-button"><span>💬</span><strong>Reden</strong></button>
+              <button type="button" data-action="play" class="action-button"><span>✦</span><strong>Spielen</strong></button>
+              <button type="button" data-action="create" class="action-button"><span>✳</span><strong>Erfinden</strong></button>
+              <button type="button" data-action="rest" class="action-button"><span>☾</span><strong>Träumen</strong></button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="card identity-card">
+            <div class="identity-top"><div class="avatar-mini">✳</div><span class="status-tag"><span class="status-dot"></span> LEBT SEIN LEBEN</span></div>
+            <div class="section-kicker">DEIN KLEINER BEGLEITER</div>
+            <h2 id="creature-name" class="identity-name">...</h2>
+            <p id="personality-line" class="identity-desc">Findet sich gerade selbst.</p>
+            <div class="identity-meta"><span>✦ <span id="stage-label">Ein neuer Funke</span></span><span>◷ <span id="age-label">gerade erst erwacht</span></span></div>
+            <div class="bond-header"><span>Eure Verbindung</span><strong id="bond-label">18%</strong></div>
+            <div class="progress-track connection-track"><div id="bond-bar" class="progress-fill"></div></div>
+          </section>
+
+          <section class="card meters-card">
+            <div class="section-heading"><div><span class="section-kicker">INNERES GLEICHGEWICHT</span><h2>Wie es ihm geht</h2></div><span class="section-emoji">☁</span></div>
+            <div class="meters">
+              <div class="meter-row"><div class="meter-label"><span><i class="meter-icon purple">☾</i> Energie</span><strong id="energy-value">0</strong></div><div class="progress-track"><div id="energy-bar" class="progress-fill purple-bar"></div></div></div>
+              <div class="meter-row"><div class="meter-label"><span><i class="meter-icon yellow">✦</i> Neugier</span><strong id="wonder-value">0</strong></div><div class="progress-track"><div id="wonder-bar" class="progress-fill yellow-bar"></div></div></div>
+              <div class="meter-row"><div class="meter-label"><span><i class="meter-icon pink">♡</i> Verbundenheit</span><strong id="connection-value">0</strong></div><div class="progress-track"><div id="connection-bar" class="progress-fill pink-bar"></div></div></div>
+              <div class="meter-row"><div class="meter-label"><span><i class="meter-icon mint">✳</i> Inspiration</span><strong id="spark-value">0</strong></div><div class="progress-track"><div id="spark-bar" class="progress-fill mint-bar"></div></div></div>
+            </div>
+            <p class="gentle-note">Es kümmert sich um sich selbst. Du musst nichts abarbeiten.</p>
+          </section>
+
+          <section class="card goal-card">
+            <div class="section-heading"><div><span class="section-kicker">GANZ EIGENER ANTRIEB</span><h2>Sein großer Traum</h2></div><span class="goal-star">✳</span></div>
+            <h3 id="goal-title">Die Welt verstehen</h3>
+            <p id="goal-description">Es verfolgt, was ihm wirklich wichtig wird.</p>
+            <div class="goal-footer"><span>Auf seinem Weg</span><strong id="goal-value">0%</strong></div>
+            <div class="progress-track"><div id="goal-bar" class="progress-fill goal-fill"></div></div>
+            <span id="goals-reached" class="goal-achievements">Noch kein Traum vollendet · und das ist okay</span>
+          </section>
+        </aside>
+      </div>
+
+      <section class="discovery-grid">
+        <div class="card journal-card">
+          <div class="section-heading"><div><span class="section-kicker">DIE GESCHICHTE, DIE ENTSTEHT</span><h2>Seine kleinen Erinnerungen</h2></div><span class="section-emoji">✎</span></div>
+          <p class="card-subtitle">Auch wenn du nicht da bist, passiert etwas in seiner Welt.</p>
+          <div id="journal" class="journal-list" aria-live="off"></div>
+        </div>
+        <div class="card identity-traits-card">
+          <div class="section-heading"><div><span class="section-kicker">NICHT VON DIR FESTGELEGT</span><h2>Das macht es einzigartig</h2></div><span class="section-emoji">✧</span></div>
+          <p class="card-subtitle">Diese Eigenschaften entstehen zufällig und wachsen mit seinen Erfahrungen.</p>
+          <div id="traits" class="traits-list"></div>
+          <div class="habit-callout"><div class="habit-icon">↝</div><div><span>Seine liebste Beschäftigung</span><strong id="favorite-habit">Findet seinen eigenen Weg</strong></div></div>
+        </div>
+      </section>
+      <footer class="footer"><span>mio. <span>✳</span> Jedes Wesen schreibt eine andere Geschichte.</span><span>Mit Liebe gemacht · ganz privat auf deinem Gerät</span></footer>
+    </main>
+  </div>
+
+  <div class="dialog-backdrop" id="welcome" hidden>
+    <section class="dialog welcome-dialog" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <div class="welcome-illustration"><div class="welcome-planet"><span>✳</span></div><div class="orbit one"></div><div class="orbit two"></div></div>
+      <div class="eyebrow">DER ANFANG VON ETWAS EIGENEM</div>
+      <h2 id="welcome-title">Jedes Leben beginnt<br>mit einem <em>Funken.</em></h2>
+      <p>Gib ihm einen Namen. Persönlichkeit, Vorlieben und Träume findet es selbst. Es gibt kein Richtig oder Falsch.</p>
+      <form id="birth-form">
+        <label for="name-input">Wie soll dein Wesen heißen?</label>
+        <input id="name-input" maxlength="22" placeholder="Überrasch mich ✦" autocomplete="off">
+        <button class="primary-button" type="submit">Ein kleines Leben beginnen <span>↗</span></button>
+      </form>
+      <small>Keine Anmeldung. Keine Datenübertragung. Nur eure Geschichte.</small>
+    </section>
+  </div>
+
+  <div class="dialog-backdrop" id="settings" hidden>
+    <section class="dialog settings-dialog" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <button type="button" id="close-settings" class="close-button" aria-label="Schließen">✕</button>
+      <span class="section-kicker">DEIN KLEINES UNIVERSUM</span>
+      <h2 id="settings-title">Einstellungen</h2>
+      <p>Dein Wesen lebt ausschließlich in diesem Browser. Die Simulation ist regelbasiert und braucht weder einen Server noch ein KI-Abo.</p>
+      <button type="button" id="reset-button" class="danger-button">Ein neues Wesen erschaffen</button>
+      <p class="warning-text">Das ersetzt die bisherigen Erinnerungen auf diesem Gerät unwiderruflich.</p>
+    </section>
+  </div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
