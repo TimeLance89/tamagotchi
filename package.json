@@ -6,7 +6,7 @@
   "description": "Ein autonomes, lokales Tamagotchi mit eigener Persönlichkeit.",
   "scripts": {
     "test": "node --test",
-    "start": "python3 -m http.server 4173"
+    "start": "node server.mjs"
   },
   "engines": {
     "node": ">=20"
