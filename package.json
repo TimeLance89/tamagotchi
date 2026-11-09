@@ -1,0 +1,14 @@
+{
+  "name": "mio-eigenleben",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Ein autonomes, lokales Tamagotchi mit eigener Persönlichkeit.",
+  "scripts": {
+    "test": "node --test",
+    "start": "python3 -m http.server 4173"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
