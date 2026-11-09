@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Nunito:wght@400;500;600;700;800;900&display=swap');
-
 :root {
   color-scheme: dark;
   --page: #0d1425;
@@ -12,7 +10,7 @@
   --pink: #efa2c3;
   --mint: #76d8b5;
   --gold: #f5ca88;
-  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
   background: var(--page);
   font-synthesis: none;
 }
@@ -31,7 +29,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .ambient-b { top: 60px; right: -330px; width: 700px; height: 600px; background: #15334c; }
 .shell { max-width: 1376px; margin: 0 auto; padding: 0 45px; }
 .topbar { height: 100px; border-bottom: 1px solid rgba(255,255,255,.06); display: flex; align-items: center; justify-content: space-between; }
-.brand { color: #fff; text-decoration: none; display: flex; align-items: center; gap: 12px; font-family: "Nunito", sans-serif; font-weight: 900; font-size: 28px; letter-spacing: -.08em; }
+.brand { color: #fff; text-decoration: none; display: flex; align-items: center; gap: 12px; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-weight: 900; font-size: 28px; letter-spacing: -.08em; }
 .brand-mark { position: relative; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 13px; background: #ddc3ff; color: #433667; font-size: 25px; letter-spacing: -.1em; box-shadow: 0 5px 20px #b49be235; }
 .brand-mark span { font-size: 10px; position: absolute; right: 6px; top: 3px; color: #fff; }
 .brand-dot { color: #d9bdff; }
@@ -47,7 +45,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .eyebrow, .section-kicker { color: #c4a7fb; font-size: 10px; font-weight: 800; letter-spacing: .16em; }
 .mini-spark { margin-right: 7px; font-size: 17px; }
 h1, h2, h3, p { margin-top: 0; }
-h1, h2, h3 { font-family: "Nunito", system-ui, sans-serif; }
+h1, h2, h3 { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
 h1 { font-size: clamp(29px, 3.65vw, 48px); line-height: 1.20; letter-spacing: -.055em; margin: 14px 0 12px; font-weight: 900; }
 h1 em, .dialog h2 em { font-style: normal; color: #d7bafa; }
 .intro p { max-width: 620px; color: #97a5bc; line-height: 1.7; font-size: 14px; margin: 0; }
@@ -101,7 +99,7 @@ h1 em, .dialog h2 em { font-style: normal; color: #d7bafa; }
 .scene-footer { position: absolute; bottom: 0; left: 0; right: 0; height: 77px; display: flex; align-items: center; justify-content: space-between; padding: 15px 28px; background: linear-gradient(90deg,#17283b9e,#20334888); backdrop-filter: blur(14px); }
 .scene-footer-main { display: flex; flex-direction: column; gap: 5px; }
 .scene-label { font-size: 9px; font-weight: 800; letter-spacing: .17em; color: #d5ddeb; }
-.scene-footer strong { font-family: "Nunito", sans-serif; font-size: 16px; color: #fff; }
+.scene-footer strong { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; font-size: 16px; color: #fff; }
 .activity-symbol { font-size: 27px; color: #fbecd9; }
 .scene-controls { padding: 25px 27px 27px; flex: 1; }
 .controls-heading, .section-heading { display: flex; justify-content: space-between; align-items: center; }
